@@ -19,6 +19,8 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.mycompany.myapp.Service.UserService;
 import java.io.IOException;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +33,7 @@ public class Login {
     SpanLabel lb;
     TextField unf;
     TextField pf;
-    Button valider;
+    Button valider,fb,log,signup;
     Button inscription;
     Image logo;
     
@@ -40,28 +42,44 @@ public class Login {
         f = new Form("login",new BoxLayout(BoxLayout.Y_AXIS));
         unf = new TextField("", "Username");
         pf = new TextField("", "Password");
+        try {
+            fb = new Button("Connectez avec Facebook", Image.createImage("/fb_2.png"));
+        } catch (IOException ex) {
+            
+        }
+       
         pf.setConstraint(TextArea.PASSWORD);
-        valider = new Button("Se connecter");
-        inscription = new Button("S'inscrire");
         
-        inscription.addActionListener(new ActionListener() {
+        log = new Button("Se connecter");
+       signup = new Button("S'inscrire");
+        
+        signup.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 Inscription inscription = new Inscription();
             }
         });
-        
-        valider.addActionListener(new ActionListener() {
+        fb.addActionListener(new ActionListener<ActionEvent>() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    System.out.println("connected with fb button clicked");
+                    UserForm l = new UserForm();
+                    l.show();
+                }
+            });
+        log.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 UserService us = new UserService();
-                if(UserService.recupererUser(unf.getText(),pf.getText())== 0){
-                    HomePage affForm = new HomePage();
+                int existe=UserService.recupererUser(unf.getText(),pf.getText());
+                if(UserService.recupererUser(unf.getText(),pf.getText()) > 0){
+                    System.out.println(unf.getText());
+                    HomePage affForm = new HomePage(existe);
                     homepage = affForm.getF();
                     homepage.show();
                     
                 }
-              else{
+                else {
                     Dialog dlg = new Dialog("Erreurs!");
                     dlg.setLayout(new BorderLayout());
                     dlg.setDialogType(Dialog.TYPE_WARNING);
@@ -82,8 +100,10 @@ public class Login {
         f.add(logo);
       f.add(unf);
         f.add(pf);
-        f.add(valider);
-        f.add(inscription);
+        
+        f.add(log);
+        f.add(signup);
+        f.add(fb);
         f.show();  
     }
     public Form getF() {

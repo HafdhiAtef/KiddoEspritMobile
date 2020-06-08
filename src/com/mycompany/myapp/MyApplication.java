@@ -48,7 +48,10 @@ public class MyApplication {
             Dialog.show("Connection Error", "There was a networking error in the connection to " + err.getConnectionRequest().getUrl(), "OK", null);
         });        
     }
-    
+    //charts *
+    //mes reclams
+    //reclamation < 3
+   
     public void start() {
         if(current != null){
             current.show();

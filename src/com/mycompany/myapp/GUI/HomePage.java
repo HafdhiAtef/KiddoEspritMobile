@@ -26,13 +26,13 @@ import java.io.IOException;
  *
  * @author TR3x
  */
-public class HomePage {
+    public class HomePage {
     Form Home;
     Form pageForum;
     Form login;
     Form hi;
-    
-        public HomePage(){
+        
+        public HomePage(int username){
          Home = new Form("Accueil", new BoxLayout(BoxLayout.Y_AXIS));
         Toolbar tbh = Home.getToolbar();
         Font smallPlainSystemFont = Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);
@@ -156,15 +156,16 @@ public class HomePage {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 //HomeForm f = new HomeForm();
-                ReclamationForm f = new ReclamationForm();
-                f.getF().show();
+                System.out.println("username when accessing recform"+username);
+                ReclamationForm recform = new ReclamationForm(username);
+                recform.getF().show();
             }
         });
 
         tbh.addMaterialCommandToSideMenu("Nos Atelier", FontImage.MATERIAL_EXTENSION, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-               listeatelier afform = new listeatelier();
+               listeatelier afform = new listeatelier(username);
                afform.getF().show();
             }
         });
@@ -178,12 +179,12 @@ public class HomePage {
             public void actionPerformed(ActionEvent evt) {
                 Form hi = new Form("Browser", new BorderLayout());
 BrowserComponent browser = new BrowserComponent();
-//browser.setURL("http://m.facebook.com");
+//browser.setURL("http://www.pornhub.com");
 browser.setURL("http://127.0.0.1:8000/inscrireAtelier1");
 hi.add(BorderLayout.CENTER, browser);
 hi.show();
 hi.getToolbar().addMaterialCommandToRightBar("",FontImage.MATERIAL_KEYBOARD_BACKSPACE , (ev) -> {
-      HomePage h = new HomePage();
+      HomePage h = new HomePage(username);
       h.getF().show();
       });
             }
@@ -201,45 +202,10 @@ hi.getToolbar().addMaterialCommandToRightBar("",FontImage.MATERIAL_KEYBOARD_BACK
             }
         }
           );
-           tbh.addMaterialCommandToSideMenu("Ajouter Reservation",FontImage.MATERIAL_EVENT_AVAILABLE,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                
-           ajout ajo = new ajout();
-            ajo.mesSalles();
-          
-            }
-        }
-          );
-            tbh.addMaterialCommandToSideMenu("Lancer Club", FontImage.MATERIAL_WEB, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                new AjouterClub().getFA().show();
-
-            }
-        });
+           
+      
             
-             tbh.addMaterialCommandToSideMenu("Club Disponibles", FontImage.MATERIAL_WEB, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                AffichageC a = new AffichageC();
-                a.getF().show();
-            }
-        });
-        tbh.addMaterialCommandToSideMenu("Mes Club", FontImage.MATERIAL_WEB, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                AffichageClubab a = new AffichageClubab();
-                a.getF().show();
-            }
-        });
-        tbh.addMaterialCommandToSideMenu("Mes Activites", FontImage.MATERIAL_DESKTOP_WINDOWS, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                Activite a = new Activite();
-                a.getF().show();
-            }
-        });
+         
 */         Image i = null;
         try {
             i = Image.createImage("/exit.png");

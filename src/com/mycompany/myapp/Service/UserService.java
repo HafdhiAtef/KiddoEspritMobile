@@ -63,7 +63,7 @@ public class UserService {
             result = j.parseJSON(new CharArrayReader(json.toCharArray()));
             if(result.isEmpty() ){
                 System.out.println("user not found");
-                existe = 1;
+                existe = -1;
             }
             else{
                 System.out.println("user correct, password correct");
@@ -71,15 +71,18 @@ public class UserService {
                 String db_pass  = (String)result.get("password");
                 if(checkPassword(password, db_pass)){
                     loggedin.setId(id);
+                    
                     loggedin.setUsername(result.get("username").toString());
                     loggedin.setEmail(result.get("email").toString());
                     loggedUser = loggedin;
-                    existe = 0;
+                    existe = loggedin.getId();
+                    System.out.println("logged user id = "+existe);
+                    
                 }
                 else
                 {
                     System.out.println("user correct, password incorrect");
-                    existe = 2;
+                    existe = -2;
                 } 
                 
             }
@@ -89,5 +92,6 @@ public class UserService {
                 ex.printStackTrace();
             }
         return existe;
+        
     }
 }

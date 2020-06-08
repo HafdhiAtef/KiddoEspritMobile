@@ -9,11 +9,15 @@ import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
 import static com.codename1.io.Log.e;
+import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
 import com.codename1.ui.List;
+import com.codename1.ui.events.ActionListener;
+import com.mycompany.myapp.Entity.Atelier;
 import com.mycompany.myapp.Entity.Reclamation;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -21,41 +25,59 @@ import java.util.Map;
  * @author TR3x
  */
 public class ServiceReclamation {
-   /* public ArrayList<Reclamation> parseListTaskJson(String json) throws IOException{
-        ArrayList<Reclamation> listReclamation = new ArrayList<>();
+  public int  parseListTaskJson(String json){
+         int i = 0;
+        //ArrayList<Atelier> listAtelier = new ArrayList<>();
         
-        try {
-            JSONParser j = new JSONParser();
-            Map<String, Object> tasks = j.parseJSON(new CharArrayReader(json.toCharArray()));
+        try{
+            /*JSONParser j = new JSONParser();
+            Map<String,Object> tasks = j.parseJSON(new CharArrayReader(json.toCharArray()));
             List<Map<String, Object>> list = (List<Map<String, Object>>) tasks.get("root");
-            
-            for (Map<String, Object> obj : list){
-                Reclamation r = new Reclamation();
+                      
+            for (Map<String, Object> obj : list) {
+                Atelier a = new Atelier();
                 
                 float id = Float.parseFloat(obj.get("id").toString());
-                float etat = Float.parseFloat(obj.get("etat").toString());
-                float user= Float.parseFloat(obj.get("id_user").toString());
+                a.setId((int)id);
+                a.setNom(obj.get("nom").toString());
+                a.setDescription(obj.get("description").toString());
+                a.setDate_debut(obj.get("date_debut").toString());
+                a.setDate_fin(obj.get("date_fin").toString());
+                a.setPath(obj.get("path").toString());
                 
-                r.setTitre(obj.get("titre").toString());
-                r.setId((int) id);
-                r.setContenu(obj.get("contenu").toString());
-                r.setId_user((int) user);
-                
-                listReclamation.add(r);
-                System.out.println(r);
-            } 
+                listAtelier.add(a);
+                System.out.println(a);
+                System.out.println(a.getDate_debut());
+                System.out.println(a.getNom());                       
                 
             }
-            catch (IOException ex){
-                    
-                    }
-            System.out.println(listReclamation);
-                    return listReclamation;
-        }*/
+        */    
+        //tasks = new ArrayList<>();
+        JSONParser j = new JSONParser();
+        
+        Map<String, Object> tasks = j.parseJSON(new CharArrayReader(json.toCharArray()));
+        java.util.List<Map<String,Object>> list = (java.util.List<Map<String,Object>>)tasks.get("root");
+        for(Map<String,Object> obj : list){
+      
+         float id = Float.parseFloat(obj.get("count").toString());
+            
+            i = (int)id;
+         
+                 
+                 
+        }    
+            
+            
+        } catch (IOException ex){
+                 }
+                   
+        return i;
+      
+    }
         
         public void ajouterReclamation(Reclamation r){
             ConnectionRequest con = new ConnectionRequest();
-            String Url = "http://localhost/KiddoEsprit/web/app_dev.php/ajoutermobile?titre=" + r.getTitre()+ "&contenu=" + r.getContenu()  ;
+            String Url = "http://localhost/KiddoEsprit/web/app_dev.php/ajoutermobile?titre=" + r.getTitre()+ "&contenu=" + r.getContenu()+"&iduser="+r.getId_user()  ;
         con.setUrl(Url);// Insertion de l'URL de notre demande de connexion
 
         con.addResponseListener((l) -> {
@@ -66,6 +88,30 @@ public class ServiceReclamation {
         NetworkManager.getInstance().addToQueueAndWait(con);// Ajout de notre demande de connexion à la file d'attente du NetworkManager
             
         }
+        
+        int a;
+        public int Recuperercount(int id){
+           
+        ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost/KiddoEsprit/web/app_dev.php/countrec?id="+id);
+         con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                
+                a = parseListTaskJson(new String(con.getResponseData()));
+                con.removeResponseListener(this);
+                                    
+            }
+         });
+        NetworkManager.getInstance().addToQueueAndWait(con);
+      
+        return a;
+    }
+        
+        
+        
+        
+        
     }
     
     
